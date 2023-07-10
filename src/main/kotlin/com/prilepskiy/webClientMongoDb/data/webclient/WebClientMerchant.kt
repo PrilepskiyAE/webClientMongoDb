@@ -1,4 +1,4 @@
-package com.prilepskiy.webClientMongoDb.data
+package com.prilepskiy.webClientMongoDb.data.webclient
 
 import jakarta.annotation.PostConstruct
 
