@@ -1,5 +1,6 @@
 package com.prilepskiy.webClientMongoDb.data.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
@@ -9,4 +10,5 @@ data class Offer(
     val id:Int,
     val name:String,
     val price:String,
-    val merchantId:List<Int>)
+    @JsonProperty("merchant_id")
+    val merchantId:List<Int> = listOf())
