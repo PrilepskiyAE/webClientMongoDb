@@ -1,13 +1,16 @@
-package com.prilepskiy.webClientMongoDb.domain.webclient
+package com.prilepskiy.webClientMongoDb.domain.service
 
+import com.prilepskiy.webClientMongoDb.data.model.Merchant
+import com.prilepskiy.webClientMongoDb.domain.repository.MerchantRepository
 import jakarta.annotation.PostConstruct
 
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToFlux
 
-@Component
-class WebClientMerchant {
+@Service
+class MerchantService(private val merchantRepository: MerchantRepository) {
     private val client = WebClient.create("http://192.168.0.121:8080/merchants")
 
 //    @PostConstruct
@@ -25,12 +28,16 @@ class WebClientMerchant {
 //
 //    }
 @PostConstruct
-private  fun getDate(){
+private  fun initDate(){
+    merchantRepository.deleteAll()
     client.get()
         .retrieve()
-        .bodyToFlux<String>()//тут будет MerchantOffer
+        .bodyToFlux<Merchant>()
         .toStream().forEach {
-            println(it) //тут будет запись в бд
+                merchantRepository.save(it)
+                println(it)
         }
 }
+    fun findAllMerchant():List<Merchant> = merchantRepository.findAll().toList()
+
 }
