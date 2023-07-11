@@ -1,4 +1,4 @@
-package com.prilepskiy.webClientMongoDb.domain.controller
+package com.prilepskiy.webClientMongoDb.controller
 
 import com.prilepskiy.webClientMongoDb.domain.service.MerchantOfferService
 import org.springframework.stereotype.Controller
