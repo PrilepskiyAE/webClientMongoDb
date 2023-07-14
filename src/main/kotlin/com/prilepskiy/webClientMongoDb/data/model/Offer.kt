@@ -8,7 +8,7 @@ import java.util.*
 @Document
 data class Offer(
     @Id
-    val id: String=  UUID.randomUUID().toString(),
+    val id: String?=null,
     val offerId:Int,
     val name:String="",
     val price:String="",
