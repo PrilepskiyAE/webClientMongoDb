@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToFlux
+import org.springframework.web.reactive.function.client.bodyToMono
+import reactor.core.publisher.Flux
 
 @Service
 class MerchantService(private val merchantRepository: MerchantRepository) {
-    private val client = WebClient.create("http://192.168.0.121:8080/merchants")
+    private val client = WebClient.create("http://192.168.0.121:8090/merchants")
 
 //    @PostConstruct
 //    private  fun getDate(){
@@ -32,12 +34,13 @@ private  fun initDate(){
     merchantRepository.deleteAll()
     client.get()
         .retrieve()
-        .bodyToFlux<Merchant>()
-        .toStream().forEach {
-                merchantRepository.save(it)
-                println(it)
-        }
+        .bodyToMono<Merchant>()
+        .flatMap(merchantRepository::save)
 }
-    fun findAllMerchant():List<Merchant> = merchantRepository.findAll().toList()
+    fun findAllMerchant(): Flux<Merchant> = merchantRepository.findAll()
+    fun getMerchant(merchantId:List<Int>): Flux<Merchant> {
+        println(merchantId)
+       return merchantRepository.findAllById(merchantId)
+    }
 
 }
